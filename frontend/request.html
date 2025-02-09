@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Request Registration</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: url('https://i.pinimg.com/736x/fd/44/db/fd44db49b95f142bb14bab247b67073b.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8); /* Translucent white background */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #dc3545;
+        }
+
+        .info {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255, 235, 240, 0.8); /* Translucent pink background */
+            border: 1px solid #f5c6cb;
+            border-radius: 6px;
+        }
+
+        .info h2 {
+            color: #dc3545;
+            margin-bottom: 10px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            background-color: #dc3545;
+            color: white;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Blood Request Registration</h1>
+
+        <div class="info">
+            <h2>Important Information</h2>
+            <ul>
+                <li>Ensure that the requested blood type matches the recipient's medical requirements.</li>
+                <li>Provide complete and accurate hospital details for a smooth donation process.</li>
+                <li>Specify the urgency of the request clearly to prioritize life-threatening cases.</li>
+                <li>Contact the blood bank immediately for assistance in case of emergencies.</li>
+            </ul>
+        </div>
+
+        <form action="submit_blood_request.php" method="POST">
+            <label for="fullName">Full Name:</label>
+            <input type="text" id="fullName" name="fullName" placeholder="Enter recipient's full name" required>
+
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" placeholder="Enter recipient's age" required>
+
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="" disabled selected>Select recipient's gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label for="bloodGroup">Blood Group Needed:</label>
+            <select id="bloodGroup" name="bloodGroup" required>
+                <option value="" disabled selected>Select required blood group</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+            </select>
+
+            <label for="volume">Required Blood Volume (in mL):</label>
+            <input type="number" id="volume" name="volume" placeholder="Enter required volume (e.g., 500 mL)" required>
+
+            <label for="hospital">Hospital Name:</label>
+            <input type="text" id="hospital" name="hospital" placeholder="Enter hospital name" required>
+
+            <label for="address">Hospital Address:</label>
+            <textarea id="address" name="address" rows="3" placeholder="Enter complete hospital address" required></textarea>
+
+            <label for="phone">Contact Number:</label>
+            <input type="tel" id="phone" name="phone" placeholder="Enter your contact number" required>
+
+            <label for="reason">Reason for Blood Request:</label>
+            <textarea id="reason" name="reason" rows="4" placeholder="Provide details of the medical emergency or condition" required></textarea>
+
+            <label for="urgency">Urgency of Request:</label>
+            <select id="urgency" name="urgency" required>
+                <option value="" disabled selected>Select urgency level</option>
+                <option value="Critical">Critical</option>
+                <option value="High">High</option>
+                <option value="Moderate">Moderate</option>
+                <option value="Low">Low</option>
+            </select>
+
+            <button type="submit">Submit Blood Request</button>
+        </form>
+    </div>
+</body>
+</html>
