@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donor List</title>
+    <link rel="stylesheet" href="donor-list-styles.css">
+</head>
+<body>
+    <header>
+        <h2>Donor List</h2>
+        <a href="admin-dashboard.html">Back to Dashboard</a>
+    </header>
+
+    <section class="filter-section">
+        <label for="blood-group">Blood Group:</label>
+        <select id="blood-group">
+            <option value="">All</option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+        </select>
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" placeholder="Enter city or area">
+
+        <button onclick="fetchDonors()">Search</button>
+    </section>
+
+    <section>
+        <table id="donor-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Blood Group</th>
+                    <th>Location</th>
+                    <th>Last Donation Date</th>
+                    <th>Contact</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Donor data will be inserted here dynamically -->
+            </tbody>
+        </table>
+    </section>
+
+    <script src="donor_list.js"></script>
+</body>
+</html>

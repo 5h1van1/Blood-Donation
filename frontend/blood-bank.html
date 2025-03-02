@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Bank Stock</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        table {
+            width: 50%;
+            margin: auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+        }
+        th {
+            background-color: #ff6666;
+            color: white;
+        }
+        .low-stock {
+            background-color: #ffcccb;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Available Blood Stock</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Blood Group</th>
+                <th>Units Available</th>
+            </tr>
+        </thead>
+        <tbody id="bloodStockTable">
+            <!-- Data will be inserted here -->
+        </tbody>
+    </table>
+
+    <script>
+        async function fetchBloodStock() {
+            const response = await fetch("/get-blood-stock");
+            const data = await response.json();
+            const tableBody = document.getElementById("bloodStockTable");
+
+            tableBody.innerHTML = ""; // Clear previous data
+
+            data.forEach(row => {
+                const tr = document.createElement("tr");
+                if (row.units_available < 5) { 
+                    tr.classList.add("low-stock");  // Highlight low stock
+                }
+                //tr.innerHTML = <td>${row.blood_group}</td><td>${row.units_available}</td>;
+                tableBody.appendChild(tr);
+            });
+        }
+
+        fetchBloodStock();
+    </script>
+
+</body>
+</html>

@@ -87,6 +87,9 @@ footer {
     font-weight: bold;
     border: 2px solid #c62828;
     margin-right: 10px;
+    top:40px;
+    right: 10px;
+    position:absolute;
 }
 
 .admin-btn:hover {

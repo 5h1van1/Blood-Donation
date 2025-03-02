@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donation Management System - Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('https://i.pinimg.com/736x/fd/44/db/fd44db49b95f142bb14bab247b67073b.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .registration-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .registration-container h1 {
+            margin-bottom: 20px;
+            color: #d9534f;
+        }
+
+        .registration-container form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .registration-container input,
+        .registration-container select,
+        .registration-container textarea {
+            margin-bottom: 15px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .registration-container .form-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .registration-container button {
+            background-color: #d9534f;
+            color: #ffffff;
+            border: none;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .registration-container button:hover {
+            background-color: #c9302c;
+        }
+
+        .registration-container a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .registration-container a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="registration-container">
+        <h1>Register</h1>
+        <form action="/register" method="POST">
+            <input type="text" name="name" placeholder="Full Name" required>
+            <input type="date" name="dob" placeholder="Date of Birth" required>
+            <div class="form-group">
+                <select name="blood_group" required>
+                    <option value="" disabled selected>Blood Group</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                </select>
+                <input type="tel" name="contact" placeholder="Contact Number" required pattern="[0-9]{10}">
+            </div>
+            <input type="email" name="email" placeholder="Email Address" required>
+            <textarea name="address" placeholder="Address" rows="3" required></textarea>
+            <button type="submit">Submit</button>
+        </form>
+        <p>Already have an account? <a href="login.html">Login here</a></p>
+    </div>
+</body>
+</html>
+
+	

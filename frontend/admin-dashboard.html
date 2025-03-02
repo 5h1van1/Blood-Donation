@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Admin Dashboard - Blood Donation Management</h1>
+        
+        <div class="buttons">
+            <a href="donor-list.html" class="dashboard-btn">View Donors</a>
+            <a href="recipient-list.html" class="dashboard-btn">View Recipients</a>
+            <a href="blood-bank.html" class="dashboard-btn">View Blood Bank</a>
+            <a href= "check-eligibility.html" class="dashboard-btn">Check Eligiblity</a>
+        </div>
+
+        <!-- Logout Button -->
+        <button id="logoutBtn" class="logout-btn">Logout</button>
+    </div>
+
+    <script>
+        // Logout Function
+        function logout() {
+            localStorage.removeItem("adminAuth"); // Remove admin authentication token
+            window.location.href = "index.html"; // Redirect to home page
+        }
+
+        // Add event listener for logout button
+        document.getElementById("logoutBtn").addEventListener("click", logout);
+
+       /* // Check if admin is authenticated, if not redirect to login
+        if (!localStorage.getItem("adminAuth")) {
+            window.location.href = "admin-login.html";
+        }*/
+    </script>
+
+    <style>
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('https://i.pinimg.com/736x/fd/44/db/fd44db49b95f142bb14bab247b67073b.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+        .dashboard-container {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        .dashboard-btn {
+            display: block;
+            background-color: #b82e00;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            margin: 10px;
+            border-radius: 5px;
+            font-size: 18px;
+        }
+
+        .dashboard-btn:hover {
+            background-color: #680904;
+        }
+
+        .logout-btn {
+            background-color: #d9534f;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .logout-btn:hover {
+            background-color: #c9302c;
+        }
+    </style>
+</body>
+</html>

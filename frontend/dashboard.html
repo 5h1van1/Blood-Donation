@@ -3,16 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>User Dashboard</title>
     <link rel="stylesheet" href="dashboard-style.css">
 </head>
 <body>
     <div class="dashboard-container">
         <h1>Welcome to the Blood Donation Management System</h1>
+        
         <div class="buttons">
-            <a href="donor-home.html" class="dashboard-btn">I Want to Donate</a>
-            <a href="request-home.html" class="dashboard-btn">I Need Blood</a>
+            <a href="donor.html" class="dashboard-btn">I Want to Donate</a>
+            <a href="request.html" class="dashboard-btn">I Need Blood</a>
         </div>
+
+        <!-- Logout Button -->
+        <button id="logoutBtn" class="logout-btn">Logout</button>
     </div>
+
+    <script>
+        // Logout Function
+        function logout() {
+            localStorage.removeItem("auth"); // Remove authentication token
+            window.location.href = "index.html"; // Redirect to home page
+        }
+
+        // Add event listener for logout button
+        document.getElementById("logoutBtn").addEventListener("click", logout);
+
+       /* // Check if user is authenticated, if not redirect to login
+        if (!localStorage.getItem("auth")) {
+            window.location.href = "login.html";
+        }*/
+    </script>
+
+    
 </body>
 </html>
