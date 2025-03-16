@@ -17,6 +17,11 @@
             height: 100vh;
         }
 
+        .main-container {
+            display: flex;
+            gap: 20px;
+        }
+
         .registration-container {
             background-color: rgba(255, 255, 255, 0.9);
             padding: 20px;
@@ -75,37 +80,54 @@
         .registration-container a:hover {
             text-decoration: underline;
         }
+
+        .warning-container {
+            background-color: rgba(249, 207, 207, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 300px;
+            max-height: fit-content;
+            color: #d9534f;
+            font-size: 22px;
+        }
     </style>
 </head>
 <body>
-    <div class="registration-container">
-        <h1>Register</h1>
-        <form action="http://localhost:3000/register" method="POST">
-            <input type="text" name="name" placeholder="Full Name" required>
-            <input type="date" name="dob" placeholder="Date of Birth" required>
-            <div class="form-group">
-                <select name="blood_group" required>
-                    <option value="" disabled selected>Blood Group</option>
-                    <option value="A+">A+</option>
-                    <option value="A-">A-</option>
-                    <option value="B+">B+</option>
-                    <option value="B-">B-</option>
-                    <option value="O+">O+</option>
-                    <option value="O-">O-</option>
-                    <option value="AB+">AB+</option>
-                    <option value="AB-">AB-</option>
-                </select>
-                <input type="tel" name="contact" placeholder="Contact Number" required pattern="[0-9]{10}">
-            </div>
-            <input type="email" name="email" placeholder="Email Address" required>
-            <textarea name="address" placeholder="Address" rows="3" required></textarea>
-            <button type="submit">Submit</button>
-        </form>
-        <p>Already have an account? <a href="login.html">Login here</a></p>
+    <div class="main-container">
+        <!-- Registration Form Container -->
+        <div class="registration-container">
+            <h1>Register</h1>
+            <form action="http://localhost:3000/register" method="POST">
+                <input type="text" name="name" placeholder="Full Name" required>
+                <input type="date" name="dob" placeholder="Date of Birth" required>
+                <div class="form-group">
+                    <select name="blood_group" required>
+                        <option value="" disabled selected>Blood Group</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                    </select>
+                    <input type="tel" name="contact" placeholder="Contact Number" required pattern="[0-9]{10}">
+                </div>
+                <input type="email" name="email" placeholder="Email Address" required>
+                <textarea name="address" placeholder="Address" rows="3" required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+            <p>Already have an account? <a href="login.html">Login here</a></p>
+        </div>
+
+        <!-- Warning Container -->
+        <div class="warning-container">
+            <p><strong>Note:</strong> Your <strong>USERNAME</strong> is your email ID, and your <strong>PASSWORD</strong> is your DOB in the format: <strong>YYYY-MM-DD</strong>. Keep in mind. Thank you!</p>
+        </div>
     </div>
 </body>
 <script src="registration-script.js"></script>
 
 </html>
-
-	

@@ -114,9 +114,52 @@ app.post("/login", (req, res) => {
 });
 
 
-// Donor Registration with Validation
-app.post("/donor", (req, res) => {
-    const { name, email, phone, age, weight, gender, bloodType, address, ailments, medications, diseases, lastDonation } = req.body;
+app.post("/donors", (req, res) => {
+    const {
+        fullName: name, email, phone, age, weight, gender, bloodGroup: bloodType,
+        address, ailments, medications, diseases, lastDonation
+    } = req.body;
+
+    console.log("Step 1: Received Data", req.body); // Log incoming data
+
+    // Validation checks
+    if (!name || !email || !phone || !bloodType) {
+        console.error("Validation Failed: Missing required fields.");
+        return res.status(400).json({ error: "All required fields must be filled." });
+    }
+
+    console.log("Step 2: Validation Passed");
+    console.log("Dynamic Values to Insert:", [
+        name, email, phone, age, weight, gender, bloodType,
+        address, ailments, medications, diseases, lastDonation
+    ]);
+
+    const sql = `
+        INSERT INTO donors (full_name, email, phone, age, weight, gender, blood_group, address, ailments, medications, diseases, last_donation)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    db.query(sql, [
+        name, email, phone, age, weight, gender, bloodType,
+        address, ailments, medications, diseases, lastDonation || null
+    ], (err, result) => {
+        if (err) {
+            console.error("Step 3: Database Error:", err.message);
+            return res.status(500).json({ error: "A database error occurred. Please try again." });
+        }
+        console.log("Step 4: Query Success:", result);
+        res.json({ message: "Donor registered successfully!" });
+    });
+});
+
+
+/*
+//Donor reg
+app.post("/donors", (req, res) => {
+    const {
+        name, email, phone, age, weight, gender, bloodType,
+        address, ailments, medications, diseases, lastDonation
+    } = req.body;
 
     // Validation checks
     if (age < 18 || age > 65) {
@@ -129,19 +172,38 @@ app.post("/donor", (req, res) => {
         return res.status(400).json({ error: "Phone number must be exactly 10 digits." });
     }
 
-    // SQL query
-    const sql = `INSERT INTO donors (name, email, phone, age, weight, gender, blood_type, address, ailments, medications, diseases, last_donation)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    // Insert query (updated to match donors table structure)
+    const sql = `
+        INSERT INTO donors (full_name, email, phone, age, weight, gender, blood_group, address, ailments, medications, diseases, last_donation)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
 
-    db.query(sql, [name, email, phone, age, weight, gender, bloodType, address, ailments, medications, diseases, lastDonation || null], 
-    (err, result) => {
+    db.query(sql, [
+        "Test User", "test@example.com", "1234567890", 30, 70, "Male", "A+",
+        "123 Street", "None", "None", "None", "2023-01-01"
+    ], (err, result) => {
         if (err) {
-            console.error("Database Error:", err);
-            return res.status(500).json({ error: "Database error" });
+            console.error("Database Error:", err.message);
+            return res.status(500).json({ error: "A database error occurred." });
         }
-        res.json({ message: "Donor registered successfully!" });
+        res.json({ message: "Test insert successful!" });
     });
+    
+
+    // Execute query-
+    db.query(
+        sql,
+        [name, email, phone, age, weight, gender, bloodType, address, ailments, medications, diseases, lastDonation || null],
+        (err, result) => {
+            if (err) {
+                console.error("Database Error:", err.message);
+                return res.status(500).json({ error: "A database error occurred. Please try again." });
+            }
+            res.json({ message: "Donor registered successfully!" });
+        }
+    );
 });
+*/
 
 // Fetch Donors by Blood Group
 app.get("/donors", (req, res) => {
