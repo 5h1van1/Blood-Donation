@@ -205,6 +205,38 @@ app.post("/donors", (req, res) => {
 });
 */
 
+//Request form
+app.post("/recipients", (req, res) => {
+    const {
+        fullName, age, gender, bloodGroup, volume,
+        hospital, address, phone, reason, urgency
+    } = req.body;
+
+    // Validation (simple example)
+    if (!fullName || !age || !gender || !bloodGroup || !volume || !hospital || !address || !phone || !reason || !urgency) {
+        return res.status(400).json({ error: "All fields are required." });
+    }
+
+    // SQL Query to insert recipient data
+    const sql = `
+        INSERT INTO recipient (fullname, age, gender, blood_group_needed, blood_units_required, hospital_name, hospital_address, reason_for_blood, urgency)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    // Execute the query
+    db.query(sql, [
+        fullName, age, gender, bloodGroup, volume,
+        hospital, address, reason, urgency
+    ], (err, result) => {
+        if (err) {
+            console.error("Database Error:", err.message);
+            return res.status(500).json({ error: "A database error occurred. Please try again." });
+        }
+        res.json({ message: "Blood request submitted successfully!" });
+    });
+});
+
+
 // Fetch Donors by Blood Group
 app.get("/donors", (req, res) => {
     const { bloodType } = req.query;
