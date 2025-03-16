@@ -29,13 +29,50 @@ db.connect((err) => {
     }
 });
 
-// User Registration
-app.post("/register", async (req, res) => {
+// Admin Login Route (Validates Against 'admin' Table)
+app.post("/admin-login", (req, res) => {
     const { username, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
 
-    const sql = `INSERT INTO users (username, password) VALUES (?, ?)`;
-    db.query(sql, [username, hashedPassword], (err, result) => {
+    const query = "SELECT * FROM admin WHERE username = ?";
+    db.query(query, [username], (err, results) => {
+        if (err) {
+            console.error("Database query error:", err);
+            return res.status(500).json({ success: false, message: "Database error" });
+        }
+
+        if (results.length === 0) {
+            console.log("Invalid credentials: no matching user found");
+            return res.status(401).json({ success: false, message: "Invalid credentials" });
+        }
+
+        const admin = results[0];
+
+        if (password !== admin.password) {
+            console.log("Invalid credentials: password mismatch");
+            return res.status(401).json({ success: false, message: "Invalid credentials" });
+        }
+
+        // Generate JWT Token
+        const token = jwt.sign(
+            { id: admin.admin_id, username: admin.username },
+            process.env.SECRET_KEY, 
+            { expiresIn: "1h" }
+        );
+
+        res.json({ success: true, token });
+    });
+});
+
+
+// User Registration
+app.post("/register", (req, res) => {
+    const { email, dob, name, blood_group, contact, address } = req.body;
+
+    const sql = `
+        INSERT INTO users (name, dob, blood_group, contact, email, address, password)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    `;
+    db.query(sql, [name, dob, blood_group, contact, email, address, dob], (err, result) => {
         if (err) {
             console.error("Database Error:", err);
             return res.status(500).json({ error: "Database error" });
@@ -44,12 +81,13 @@ app.post("/register", async (req, res) => {
     });
 });
 
+
 // Login Route
 app.post("/login", (req, res) => {
     const { username, password } = req.body;
 
-    const query = "SELECT * FROM users WHERE username = ?";
-    db.query(query, [username], async (err, results) => {
+    const query = "SELECT * FROM users WHERE email = ?";
+    db.query(query, [username], (err, results) => {
         if (err) {
             return res.status(500).json({ success: false, message: "Database error" });
         }
@@ -59,29 +97,48 @@ app.post("/login", (req, res) => {
         }
 
         const user = results[0];
-        const passwordMatch = await bcrypt.compare(password, user.password);
 
-        if (!passwordMatch) {
+        // Direct comparison of passwords
+        if (password !== user.password) {
             return res.status(401).json({ success: false, message: "Invalid credentials" });
         }
 
-        // Generate JWT Token
+        // Generate a JWT token for session management
         const token = jwt.sign(
-            { id: user.id, username: user.username },
-            process.env.SECRET_KEY, // Use .env secret key
+            { id: user.id, email: user.email },
+            process.env.SECRET_KEY,
             { expiresIn: "1h" }
         );
         res.json({ success: true, token });
     });
 });
 
-// Donor Registration
-app.post("/donor", (req, res) => {
-    const { name, age, bloodType, email } = req.body;
-    const sql = `INSERT INTO donors (name, age, blood_type, email) VALUES (?, ?, ?, ?)`;
 
-    db.query(sql, [name, age, bloodType, email], (err, result) => {
-        if (err) return res.status(500).json({ error: "Database error" });
+// Donor Registration with Validation
+app.post("/donor", (req, res) => {
+    const { name, email, phone, age, weight, gender, bloodType, address, ailments, medications, diseases, lastDonation } = req.body;
+
+    // Validation checks
+    if (age < 18 || age > 65) {
+        return res.status(400).json({ error: "Age must be between 18 and 65 years." });
+    }
+    if (weight < 50) {
+        return res.status(400).json({ error: "Weight must be at least 50 kg." });
+    }
+    if (!/^\d{10}$/.test(phone)) {
+        return res.status(400).json({ error: "Phone number must be exactly 10 digits." });
+    }
+
+    // SQL query
+    const sql = `INSERT INTO donors (name, email, phone, age, weight, gender, blood_type, address, ailments, medications, diseases, last_donation)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+    db.query(sql, [name, email, phone, age, weight, gender, bloodType, address, ailments, medications, diseases, lastDonation || null], 
+    (err, result) => {
+        if (err) {
+            console.error("Database Error:", err);
+            return res.status(500).json({ error: "Database error" });
+        }
         res.json({ message: "Donor registered successfully!" });
     });
 });
