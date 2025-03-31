@@ -7,11 +7,12 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #ffcccb;
             text-align: center;
             margin: 20px;
         }
         table {
-            width: 50%;
+            width: 70%;
             margin: auto;
             border-collapse: collapse;
         }
@@ -30,40 +31,77 @@
     </style>
 </head>
 <body>
+    <h2>Blood Bank Stock</h2>
 
-    <h2>Available Blood Stock</h2>
+    <!-- Search Section -->
+    <section>
+        <input type="text" id="bloodBankId" placeholder="Enter Blood Bank ID">
+        <input type="text" id="bloodGroup" placeholder="Enter Blood Group (e.g., A+, B-)">
+        <button onclick="fetchBloodStock()">Search</button>
+    </section>
+
+    <!-- Blood Stock Table -->
     <table>
         <thead>
             <tr>
+                <th>Blood Bank ID</th>
                 <th>Blood Group</th>
                 <th>Units Available</th>
             </tr>
         </thead>
         <tbody id="bloodStockTable">
-            <!-- Data will be inserted here -->
+            <!-- Data will be dynamically inserted here -->
         </tbody>
     </table>
 
     <script>
-        async function fetchBloodStock() {
-            const response = await fetch("/get-blood-stock");
-            const data = await response.json();
-            const tableBody = document.getElementById("bloodStockTable");
+        // Fetch blood stock on page load
+document.addEventListener("DOMContentLoaded", () => {
+    fetchBloodStock();
+});
 
-            tableBody.innerHTML = ""; // Clear previous data
+async function fetchBloodStock() {
+    // Get search inputs
+    const bloodBankId = document.getElementById("bloodBankId").value;
+    const bloodGroup = document.getElementById("bloodGroup").value;
 
-            data.forEach(row => {
-                const tr = document.createElement("tr");
-                if (row.units_available < 5) { 
-                    tr.classList.add("low-stock");  // Highlight low stock
-                }
-                //str.innerHTML = <td>${row.blood_group}</td><td>${row.units_available}</td>;
-                tableBody.appendChild(tr);
-            });
+    // Construct the query URL
+    let query = `http://localhost:3000/get-blood-stock`;
+    const params = [];
+    if (bloodBankId) params.push(`bloodBankId=${encodeURIComponent(bloodBankId)}`);
+    if (bloodGroup) params.push(`bloodGroup=${encodeURIComponent(bloodGroup)}`);
+    if (params.length > 0) query += `?${params.join("&")}`;
+
+    try {
+        const response = await fetch(query);
+        const bloodStock = await response.json();
+        console.log("Blood Stock Data:", bloodStock);
+
+        if (!response.ok) {
+            throw new Error(bloodStock.error || "Failed to fetch blood stock.");
         }
 
-        fetchBloodStock();
-    </script>
+        // Update the table
+        const tableBody = document.getElementById("bloodStockTable");
+        tableBody.innerHTML = ""; // Clear previous data
 
+        bloodStock.forEach(item => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `<td>${item.blood_bank_id}</td>
+                            <td>${item.blood_group}</td>
+                            <td>${item.units_available}</td>`;
+            if (item.units_available < 5) {
+                tr.classList.add("low-stock"); // Highlight low stock
+            }
+            tableBody.appendChild(tr);
+        });
+
+    } catch (error) {
+        console.error("Error fetching blood stock:", error.message);
+        alert("Failed to fetch blood stock. Please try again later.");
+    }
+}
+
+    </script>
 </body>
 </html>

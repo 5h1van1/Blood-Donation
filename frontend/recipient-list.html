@@ -25,10 +25,6 @@
             <option value="AB+">AB+</option>
             <option value="AB-">AB-</option>
         </select>
-
-        <label for="location">Location:</label>
-        <input type="text" id="location" placeholder="Enter city or area">
-
         <button onclick="fetchRecipients()">Search</button>
     </section>
 
@@ -37,14 +33,15 @@
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Blood Group</th>
-                    <th>Location</th>
-                    <th>Urgency Level</th>
-                    <th>Contact</th>
+                    <th>Blood Group Required</th>
+                    <th>Units Required</th>
+                    <th>Urgency</th>
+                    <th>Hospital Name</th>
+                    <th>Hospital Address</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Recipient data will be inserted here dynamically -->
+                <!-- Recipient data will be dynamically inserted here -->
             </tbody>
         </table>
     </section>

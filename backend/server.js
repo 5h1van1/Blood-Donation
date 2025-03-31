@@ -237,21 +237,66 @@ app.post("/recipients", (req, res) => {
 });
 
 
-// Fetch Donors by Blood Group
-app.get("/donors", (req, res) => {
-    const { bloodType } = req.query;
-    const sql = `SELECT * FROM donors WHERE blood_type = ?`;
+// Donor-list functions
+app.get("/get-donors", (req, res) => {
+    const bloodGroup = req.query.bloodGroup || "%"; // Default to all blood groups
 
-    db.query(sql, [bloodType], (err, results) => {
-        if (err) return res.status(500).json({ error: "Database error" });
+    const query = `
+        SELECT full_name, blood_group, address, last_donation, phone 
+        FROM donors 
+        WHERE blood_group LIKE ?`;
+
+    db.query(query, [bloodGroup], (err, results) => {
+        if (err) {
+            console.error("Error fetching donors:", err);
+            return res.status(500).json({ error: "Failed to fetch donor data" });
+        }
+        res.json(results);
+    });
+});
+
+//Recipients-list
+app.get("/get-recipients", (req, res) => {
+    const bloodGroup = req.query.bloodGroup || "%"; // Default to all blood groups
+
+    const query = `
+        SELECT fullname, blood_group_needed, blood_units_required, urgency, hospital_name, hospital_address
+        FROM recipient
+        WHERE blood_group_needed LIKE ?`;
+
+    db.query(query, [bloodGroup], (err, results) => {
+        if (err) {
+            console.error("Error fetching recipients:", err.message);
+            return res.status(500).json({ error: "Failed to fetch recipient data" });
+        }
         res.json(results);
     });
 });
 
 // Blood bank details
-app.get("/blood-bank", (req, res) => {
-    db.query("SELECT * FROM blood_stock", (err, results) => {
-        if (err) throw err;
+app.get("/get-blood-stock", (req, res) => {
+    const { bloodBankId, bloodGroup } = req.query;
+
+    let query = `
+        SELECT blood_bank_id, blood_group, units_available
+        FROM blood_stock
+        WHERE 1 = 1`; // Always true, used for adding optional conditions
+
+    const params = [];
+    if (bloodBankId) {
+        query += " AND blood_bank_id = ?";
+        params.push(bloodBankId);
+    }
+    if (bloodGroup) {
+        query += " AND blood_group = ?";
+        params.push(bloodGroup);
+    }
+
+    db.query(query, params, (err, results) => {
+        if (err) {
+            console.error("Error fetching blood stock:", err.message);
+            return res.status(500).json({ error: "Failed to fetch blood stock data." });
+        }
         res.json(results);
     });
 });
