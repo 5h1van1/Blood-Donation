@@ -2,56 +2,77 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Need Blood - Confirmation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Need Blood Options</title>
   <style>
     body {
-      background-color: #d32f2f;
       font-family: Arial, sans-serif;
-      color: white;
-      text-align: center;
-      padding: 100px 20px;
+      background: url('https://i.pinimg.com/736x/fd/44/db/fd44db49b95f142bb14bab247b67073b.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
     }
-    .container {
-      background: rgba(255, 255, 255, 0.9);
-      color: #d32f2f;
-      padding: 40px;
-      border-radius: 10px;
-      max-width: 500px;
-      margin: auto;
-    }
-    h2 {
-      margin-bottom: 20px;
-    }
-    p {
-      margin-bottom: 30px;
-    }
-    .btn {
-      padding: 12px 24px;
-      margin: 10px;
+
+    .back-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: transparent;
       border: none;
-      border-radius: 5px;
+      color: white;
       font-size: 16px;
       cursor: pointer;
     }
-    .proceed {
-      background-color: #c62828;
+
+    .back-btn:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    .container h2 {
+      color: #b91907;
+    }
+
+    .button {
+      display: block;
+      width: 100%;
+      margin: 15px 0;
+      padding: 12px;
+      font-size: 16px;
+      background-color: #bd1f0d;
       color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
     }
-    .back {
-      background-color: #e0e0e0;
-      color: #c62828;
-    }
-    .btn:hover {
-      opacity: 0.9;
+
+    .button:hover {
+      background-color: #c0392b;
     }
   </style>
 </head>
 <body>
+  <button class="back-btn" onclick="location.href='dashboard.html'">⬅ Back</button>
+
   <div class="container">
-    <h2>Before You Proceed</h2>
-    <p>Please request blood only in case of genuine medical need. You’ll be asked to provide hospital and patient details on the next page.</p>
-    <button class="btn proceed" onclick="location.href='request.html'">Proceed to Request Form</button>
-    <button class="btn back" onclick="location.href='dashboard.html'">Back to Dashboard</button>
+    <h2>What would you like to do?</h2>
+    <button class="button" onclick="location.href='request.html'">Register Blood Request</button>
+    <button class="button" onclick="location.href='status.html'">View Request Status</button>
+    <button class="button" onclick="location.href='donors_view.html'">Find Donors List</button>
   </div>
 </body>
 </html>
