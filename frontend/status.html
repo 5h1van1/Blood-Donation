@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Request Status</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: url('https://i.pinimg.com/736x/fd/44/db/fd44db49b95f142bb14bab247b67073b.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+    }
+
+    .back-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: transparent;
+      border: none;
+      color: #f0f0f0;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .back-btn:hover {
+      text-decoration: underline;
+    }
+
+    .status-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      text-align: center;
+    }
+
+    .card {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 500px;
+    }
+
+    h2 {
+      color: #c0392b;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      width: 90%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+
+    .check-btn {
+      background-color: #e74c3c;
+      color: white;
+      padding: 10px 25px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .check-btn:hover {
+      background-color: #c0392b;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .accepted { color: green; }
+    .denied { color: red; }
+    .pending { color: orange; }
+  </style>
+</head>
+<body>
+  <button class="back-btn" onclick="location.href='needblood.html'">⬅ Back</button>
+
+  <div class="status-container">
+    <div class="card">
+      <h2>Check Blood Request Status</h2>
+      <input type="text" id="requestId" placeholder="Enter Request ID or Name" />
+      <br />
+      <button class="check-btn" onclick="checkStatus()">Check Status</button>
+      <div class="result" id="statusResult"></div>
+    </div>
+  </div>
+
+  <script>
+    function checkStatus() {
+      const requestId = document.getElementById("requestId").value.trim();
+      const resultDiv = document.getElementById("statusResult");
+
+      if (requestId === "") {
+        resultDiv.innerHTML = "Please enter a request ID or name.";
+        resultDiv.className = "result";
+      } else if (requestId.toLowerCase() === "john123") {
+        resultDiv.innerHTML = "Status: Accepted ✅";
+        resultDiv.className = "result accepted";
+      } else if (requestId.toLowerCase() === "maria456") {
+        resultDiv.innerHTML = "Status: Denied ❌";
+        resultDiv.className = "result denied";
+      } else {
+        resultDiv.innerHTML = "Status: Pending ⏳";
+        resultDiv.className = "result pending";
+      }
+    }
+
+    function goBack() {
+      window.history.back(); // or: window.location.href = 'needblood.html';
+    }
+  </script>
+</body>
+</html>
