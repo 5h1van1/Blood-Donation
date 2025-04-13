@@ -73,6 +73,33 @@
         button:hover {
             background-color: #c82333;
         }
+        .donation-check {
+    margin-bottom: 20px;
+    background: #f8d7da;
+    padding: 15px;
+    border: 1px solid #f5c6cb;
+    border-radius: 6px;
+}
+
+.radio-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.radio-label input[type="radio"] {
+    margin-right: 10px;
+    transform: scale(1.2);
+}
+
     </style>
 </head>
 <body>
@@ -140,8 +167,22 @@
             <label for="diseases">Infectious or Serious Diseases:</label>
             <textarea id="diseases" name="diseases" rows="3" placeholder="Specify any diseases or write 'None'" required></textarea>
 
-            <label for="lastDonation">Last Blood Donation Date:</label>
-            <input type="date" id="lastDonation" name="lastDonation">
+            
+
+            <div class="donation-check">
+                <label style="font-weight: bold;">When was your last blood donation?</label>
+                <div class="radio-options">
+                    <label class="radio-label">
+                        <input type="radio" name="donationGap" value="moreThan3Months" required>
+                        <span>More than 3 months ago</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="donationGap" value="within3Months" required>
+                        <span>Within the past 3 months</span>
+                    </label>
+                </div>
+            </div>
+            
 
             <button type="submit">Register</button>
         </form>
@@ -151,6 +192,18 @@
 <script>
     document.querySelector("form").addEventListener("submit", async function (event) {
         event.preventDefault(); // Prevent default form submission
+
+        // Check donation eligibility
+        const selectedOption = document.querySelector('input[name="donationGap"]:checked');
+        if (!selectedOption) {
+            alert("Please select when you last donated blood.");
+            return;
+        }
+
+        if (selectedOption.value === "within3Months") {
+            alert("You cannot donate blood because your last donation was within the past three months.");
+            return; // Block form submission
+        }
 
         // Collect form data
         const formData = new FormData(event.target);
@@ -166,11 +219,10 @@
             ailments: formData.get("ailments"),
             medications: formData.get("medications"),
             diseases: formData.get("diseases"),
-            lastDonation: formData.get("lastDonation") || null // Handle optional field
+            lastDonation: formData.get("lastDonation") || null
         };
 
         try {
-            // Send data to the server
             const response = await fetch("http://localhost:3000/donors", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -179,8 +231,8 @@
 
             const result = await response.json();
             if (response.ok) {
-                alert(result.message); // Show success message
-                window.location.href = "dashboard.html"; // Redirect to dashboard
+                alert(result.message);
+                window.location.href = "dashboard.html";
             } else {
                 console.error(result.error);
                 alert("Error during registration. Please try again.");
@@ -191,5 +243,6 @@
         }
     });
 </script>
+
 
 </html>

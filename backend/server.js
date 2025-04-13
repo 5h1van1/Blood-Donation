@@ -7,10 +7,14 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config(); // Load environment variables
 
+
+
+
 // Initialize Express app
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+
 
 // Database connection setup
 const db = mysql.createConnection({

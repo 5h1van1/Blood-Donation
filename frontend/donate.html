@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Donate - Blood Donation Portal</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('https://i.pinimg.com/736x/fd/44/db/fd44db49b95f142bb14bab247b67073b.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 50px 40px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(6px);
+      width: 90%;
+      max-width: 500px;
+    }
+
+    h1 {
+      color: #d62828;
+      font-size: 2.5rem;
+      margin-bottom: 40px;
+    }
+
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .button-group button {
+      padding: 18px 25px;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #d62828, #a61b1b);
+      color: #fff;
+      box-shadow: 0 6px 15px rgba(214, 40, 40, 0.3);
+      transition: all 0.3s ease;
+      letter-spacing: 0.5px;
+    }
+
+    .button-group button:hover {
+      transform: scale(1.05);
+      background: linear-gradient(135deg, #a61b1b, #7b1414);
+      box-shadow: 0 8px 20px rgba(214, 40, 40, 0.4);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>HELLO DONOR !</h1>
+    <div class="button-group">
+      <button onclick="goToRegister()">📝 Register to Donate</button>
+      <button onclick="goToCamps()">📅 Upcoming Donation Camps</button>
+      <button onclick="goToNotifications()">🔔 Notifications</button>
+    </div>
+  </div>
+
+  <script>
+    function goToRegister() {
+      window.location.href = "donor.html";
+    }
+
+    function goToCamps() {
+      window.location.href = "donation-camps.html";
+    }
+
+    function goToNotifications() {
+      window.location.href = "donor-notifications.html";
+    }
+  </script>
+</body>
+</html>
