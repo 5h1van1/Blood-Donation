@@ -29,7 +29,6 @@ async function fetchRecipients() {
                     <td>${recipient.fullname}</td>
                     <td>${recipient.blood_group_needed}</td>
                     <td>${recipient.blood_units_required}</td>
-                    <td>${recipient.urgency}</td>
                     <td>${recipient.hospital_name}</td>
                     <td>${recipient.hospital_address}</td>
                 </tr>

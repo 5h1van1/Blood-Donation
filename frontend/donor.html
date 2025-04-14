@@ -218,8 +218,7 @@
             address: formData.get("address"),
             ailments: formData.get("ailments"),
             medications: formData.get("medications"),
-            diseases: formData.get("diseases"),
-            lastDonation: formData.get("lastDonation") || null
+            diseases: formData.get("diseases") || null
         };
 
         try {

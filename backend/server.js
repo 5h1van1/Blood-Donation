@@ -121,7 +121,7 @@ app.post("/login", (req, res) => {
 app.post("/donors", (req, res) => {
     const {
         fullName: name, email, phone, age, weight, gender, bloodGroup: bloodType,
-        address, ailments, medications, diseases, lastDonation
+        address, ailments, medications, diseases
     } = req.body;
 
     console.log("Step 1: Received Data", req.body); // Log incoming data
@@ -135,17 +135,17 @@ app.post("/donors", (req, res) => {
     console.log("Step 2: Validation Passed");
     console.log("Dynamic Values to Insert:", [
         name, email, phone, age, weight, gender, bloodType,
-        address, ailments, medications, diseases, lastDonation
+        address, ailments, medications, diseases
     ]);
 
     const sql = `
-        INSERT INTO donors (full_name, email, phone, age, weight, gender, blood_group, address, ailments, medications, diseases, last_donation)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO donors (full_name, email, phone, age, weight, gender, blood_group, address, ailments, medications, diseases)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     db.query(sql, [
         name, email, phone, age, weight, gender, bloodType,
-        address, ailments, medications, diseases, lastDonation || null
+        address, ailments, medications, diseases || null
     ], (err, result) => {
         if (err) {
             console.error("Step 3: Database Error:", err.message);
@@ -157,80 +157,29 @@ app.post("/donors", (req, res) => {
 });
 
 
-/*
-//Donor reg
-app.post("/donors", (req, res) => {
-    const {
-        name, email, phone, age, weight, gender, bloodType,
-        address, ailments, medications, diseases, lastDonation
-    } = req.body;
-
-    // Validation checks
-    if (age < 18 || age > 65) {
-        return res.status(400).json({ error: "Age must be between 18 and 65 years." });
-    }
-    if (weight < 50) {
-        return res.status(400).json({ error: "Weight must be at least 50 kg." });
-    }
-    if (!/^\d{10}$/.test(phone)) {
-        return res.status(400).json({ error: "Phone number must be exactly 10 digits." });
-    }
-
-    // Insert query (updated to match donors table structure)
-    const sql = `
-        INSERT INTO donors (full_name, email, phone, age, weight, gender, blood_group, address, ailments, medications, diseases, last_donation)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
-
-    db.query(sql, [
-        "Test User", "test@example.com", "1234567890", 30, 70, "Male", "A+",
-        "123 Street", "None", "None", "None", "2023-01-01"
-    ], (err, result) => {
-        if (err) {
-            console.error("Database Error:", err.message);
-            return res.status(500).json({ error: "A database error occurred." });
-        }
-        res.json({ message: "Test insert successful!" });
-    });
-    
-
-    // Execute query-
-    db.query(
-        sql,
-        [name, email, phone, age, weight, gender, bloodType, address, ailments, medications, diseases, lastDonation || null],
-        (err, result) => {
-            if (err) {
-                console.error("Database Error:", err.message);
-                return res.status(500).json({ error: "A database error occurred. Please try again." });
-            }
-            res.json({ message: "Donor registered successfully!" });
-        }
-    );
-});
-*/
 
 //Request form
 app.post("/recipients", (req, res) => {
     const {
         fullName, age, gender, bloodGroup, volume,
-        hospital, address, phone, reason, urgency
+        hospital, address, phone, reason
     } = req.body;
 
     // Validation (simple example)
-    if (!fullName || !age || !gender || !bloodGroup || !volume || !hospital || !address || !phone || !reason || !urgency) {
+    if (!fullName || !age || !gender || !bloodGroup || !volume || !hospital || !address || !phone || !reason) {
         return res.status(400).json({ error: "All fields are required." });
     }
 
     // SQL Query to insert recipient data
     const sql = `
-        INSERT INTO recipient (fullname, age, gender, blood_group_needed, blood_units_required, hospital_name, hospital_address, reason_for_blood, urgency)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO recipient (fullname, age, gender, blood_group_needed, blood_units_required, hospital_name, hospital_address, reason_for_blood)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     // Execute the query
     db.query(sql, [
         fullName, age, gender, bloodGroup, volume,
-        hospital, address, reason, urgency
+        hospital, address, reason
     ], (err, result) => {
         if (err) {
             console.error("Database Error:", err.message);
@@ -246,7 +195,7 @@ app.get("/get-donors", (req, res) => {
     const bloodGroup = req.query.bloodGroup || "%"; // Default to all blood groups
 
     const query = `
-        SELECT full_name, blood_group, address, last_donation, phone 
+        SELECT full_name, blood_group, address, phone 
         FROM donors 
         WHERE blood_group LIKE ?`;
 
@@ -264,7 +213,7 @@ app.get("/get-recipients", (req, res) => {
     const bloodGroup = req.query.bloodGroup || "%"; // Default to all blood groups
 
     const query = `
-        SELECT fullname, blood_group_needed, blood_units_required, urgency, hospital_name, hospital_address
+        SELECT fullname, blood_group_needed, blood_units_required, hospital_name, hospital_address
         FROM recipient
         WHERE blood_group_needed LIKE ?`;
 
@@ -277,33 +226,6 @@ app.get("/get-recipients", (req, res) => {
     });
 });
 
-// Blood bank details
-app.get("/get-blood-stock", (req, res) => {
-    const { bloodBankId, bloodGroup } = req.query;
-
-    let query = `
-        SELECT blood_bank_id, blood_group, units_available
-        FROM blood_stock
-        WHERE 1 = 1`; // Always true, used for adding optional conditions
-
-    const params = [];
-    if (bloodBankId) {
-        query += " AND blood_bank_id = ?";
-        params.push(bloodBankId);
-    }
-    if (bloodGroup) {
-        query += " AND blood_group = ?";
-        params.push(bloodGroup);
-    }
-
-    db.query(query, params, (err, results) => {
-        if (err) {
-            console.error("Error fetching blood stock:", err.message);
-            return res.status(500).json({ error: "Failed to fetch blood stock data." });
-        }
-        res.json(results);
-    });
-});
 
 // Start server
 const PORT = process.env.PORT || 3000;

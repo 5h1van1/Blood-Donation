@@ -28,8 +28,7 @@ async function fetchDonors() {
                 <tr>
                     <td>${donor.full_name}</td>
                     <td>${donor.blood_group}</td>
-                    <td>${donor.address || "N/A"}</td>
-                    <td>${donor.last_donation ? new Date(donor.last_donation).toLocaleDateString() : "N/A"}</td>
+                    <td>${donor.address || "N/A"}</td>>
                     <td><a href="tel:${donor.phone}">${donor.phone}</a></td>
                 </tr>
             `;
